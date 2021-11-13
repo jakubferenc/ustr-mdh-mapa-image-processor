@@ -1,0 +1,3 @@
+[submodule "src/js/lib/utils"]
+	path = src/js/lib/utils
+	url = https://github.com/jakubferenc/utils
