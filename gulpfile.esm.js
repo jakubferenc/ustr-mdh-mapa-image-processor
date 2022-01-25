@@ -166,6 +166,7 @@ const prepareObjectJsonWithImages = async (doneResult) => {
     console.error(err);
   }
 
+
   gulp.src('./data-maps/*') // :TODO: use different file to start processing
   .pipe(mapStream(async (thisFolder, done) => {
 
@@ -268,7 +269,10 @@ const prepareObjectJsonWithImages = async (doneResult) => {
 
                 const imageWidth = (await image.metadata()).width;
 
-                image.resize({width: appConfig.images.object.full.width}); // resize even if the image is smaller (upsize)
+                image
+                  .rotate()
+                  .withMetadata()
+                  .resize({width: appConfig.images.object.full.width}); // resize even if the image is smaller (upsize)
                 await image.toFile(imageNameFullSizeWebpPath);
 
                 // // check if the original image size is larger than the max full width size defined in the app settings
@@ -276,6 +280,8 @@ const prepareObjectJsonWithImages = async (doneResult) => {
 
                 //   // generate, resize, rename gallery thumb
                   image
+                  .rotate()
+                  .withMetadata()
                   .resize({width: appConfig.images.object.galleryThumbnail.width}) // resize
                   .toFile(imageNameGallerySizeWebpPath); // save
 
@@ -287,6 +293,8 @@ const prepareObjectJsonWithImages = async (doneResult) => {
 
                 //   // generate, resize, rename image thumb
                   image
+                  .rotate()
+                  .withMetadata()
                   .resize({width: appConfig.images.object.thumbnail.width, fit: 'cover'}) // resize
                   .toFile(imageNameThumbSizeWebpPath); // save
 
